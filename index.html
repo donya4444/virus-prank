@@ -13,7 +13,7 @@
             font-weight: bold;
             margin-top: 20%;
         }
-        #stop {
+        #start, #stop {
             background-color: black;
             color: white;
             font-size: 20px;
@@ -27,26 +27,31 @@
 <body>
     <p>ВАШ ТЕЛЕФОН ВЗЛОМАН!</p>
     <p>Система уничтожает данные...</p>
-    <button id="stop">ОТМЕНИТЬ</button>
     
-    <audio id="siren" src="https://freesound.org/data/previews/342/342211_5865516-lq.mp3" loop></audio>
+    <button id="start">ЗАПУСТИТЬ</button>
+    <button id="stop" style="display:none;">ОТМЕНИТЬ</button>
+
+    <!-- Аудио с сиреной -->
+    <audio id="siren" src="https://www.myinstants.com/media/sounds/police.mp3" loop></audio>
 
     <script>
-        // Включаем звук сирены
-        document.getElementById("siren").play();
+        let audio = document.getElementById("siren");
 
-        // Включаем вибрацию, если поддерживается
-        if ("vibrate" in navigator) {
-            setInterval(() => {
-                navigator.vibrate([500, 200, 500, 200]);
-            }, 2000);
-        }
+        document.getElementById("start").addEventListener("click", function() {
+            audio.play().catch(e => console.log("Автовоспроизведение заблокировано"));
+            if (navigator.vibrate) {
+                navigator.vibrate([500, 500, 500, 500]);
+            }
+            document.getElementById("start").style.display = "none";
+            document.getElementById("stop").style.display = "inline";
+        });
 
-        // Остановка всего по нажатию кнопки
         document.getElementById("stop").addEventListener("click", function() {
-            document.getElementById("siren").pause();
-            navigator.vibrate(0);
-            alert("Пранк отменён!");
+            audio.pause();
+            audio.currentTime = 0;
+            if (navigator.vibrate) {
+                navigator.vibrate(0);
+            }
         });
     </script>
 </body>
