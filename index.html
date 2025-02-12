@@ -28,29 +28,25 @@
     <p>ВАШ ТЕЛЕФОН ВЗЛОМАН!</p>
     <p>Система уничтожает данные...</p>
     <button id="stop">ОТМЕНИТЬ</button>
-
-    <audio id="siren" src="https://www.myinstants.com/media/sounds/police.mp3" loop></audio>
+    
+    <audio id="siren" src="https://freesound.org/data/previews/342/342211_5865516-lq.mp3" loop></audio>
 
     <script>
-        // Запуск звука сирены
-        let siren = document.getElementById("siren");
-        siren.play();
+        // Включаем звук сирены
+        document.getElementById("siren").play();
 
-        // Вибрация телефона
-        function vibratePhone() {
-            if (navigator.vibrate) {
-                navigator.vibrate([500, 500, 500]); // Вибрация 3 раза
-            }
+        // Включаем вибрацию, если поддерживается
+        if ("vibrate" in navigator) {
+            setInterval(() => {
+                navigator.vibrate([500, 200, 500, 200]);
+            }, 2000);
         }
-        vibratePhone();
-        setInterval(vibratePhone, 3000); // Вибрация каждые 3 секунды
 
-        // Остановка "взлома"
+        // Остановка всего по нажатию кнопки
         document.getElementById("stop").addEventListener("click", function() {
-            document.body.style.backgroundColor = "black";
-            document.body.innerHTML = "<p>Шутка окончена! &#128521;</p>";
-            siren.pause();
+            document.getElementById("siren").pause();
             navigator.vibrate(0);
+            alert("Пранк отменён!");
         });
     </script>
 </body>
